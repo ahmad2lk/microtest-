@@ -1,11 +1,11 @@
 package recipemanager.projekt.recipemanager.model;
 
+
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 
 @Getter
@@ -49,10 +49,7 @@ public class IngredientStep  implements Serializable {
 
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "step_id")
-    @JsonBackReference("steps_ingredientSteps")
-    private Step step;
+
 
 
 

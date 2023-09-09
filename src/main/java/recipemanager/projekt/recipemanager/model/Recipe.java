@@ -42,18 +42,10 @@ public class Recipe  implements Serializable {
             nullable = false ,
             columnDefinition = "TEXT",
             unique = true  )
-    private String designation;
+    private String name;
 
+    private Double price;
 
-
-    @JsonManagedReference(value = "ingredients_recipe")
-    @OneToMany(  mappedBy = "recipe",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
-    private List<Ingredient> ingredients ;
-
-
-    @JsonManagedReference(value = "recipe_steps")
-    @OneToMany(  mappedBy = "recipe",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
-    private List<Step> steps ;
 
 
 

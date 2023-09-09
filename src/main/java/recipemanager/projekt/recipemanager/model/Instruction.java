@@ -38,10 +38,7 @@ public class Instruction implements Serializable {
             private String description;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "step_id")
-    @JsonBackReference(value = "step_instructions")
-    private Step step;
+
 
 
 }

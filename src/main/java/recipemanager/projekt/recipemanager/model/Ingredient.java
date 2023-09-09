@@ -42,10 +42,7 @@ public class Ingredient implements Serializable {
 
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id")
-    @JsonBackReference(value = "ingredients_recipe")
-    private Recipe recipe;
+
 
 
     @JsonManagedReference(value = "ingredient_ingredientSteps")

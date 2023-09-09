@@ -1,6 +1,11 @@
+
 spring:
+  application:
+    name: recipes
+  config:
+    import: optional:configserver:http://localhost:8888
   datasource:
-    url: jdbc:postgresql://localhost:5432/recipe_managegment_data
+    url: jdbc:postgresql://localhost:5432/recipe
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: letmein
@@ -23,6 +28,11 @@ spring:
 
 
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8087/api/v1/auth/check
 
 
 application:

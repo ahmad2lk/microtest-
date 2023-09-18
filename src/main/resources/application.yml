@@ -28,19 +28,10 @@ spring:
 
 
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8087/api/v1/auth/check
+  spring:
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: http://localhost:8089/api/v1/users/auth/check
 
-
-application:
-  security:
-    jwt:
-      secret-key:  ZtxVxRL9HkoEcoLHu1oCkRoiSihFuLtKV++l1HYVHZXjJudkW7O6AxTwykZa90BnniCqK5lK1HDkJbNkwt6pS0aEvfYkTQWUdNz5tt/ZtkIG16EkScXqwXl4uO0Jbmooyev9zKybhwePWgwwOTnARUVzCE8SQTU2rVLqN587WZsyOcwWFshy2UsP7TZm4a6IMjzFGroY4lY82giK662655+x0z4rYlX7fQqFySwGFLMRiMB+Ntsoy1pEiQggJ3xvdj90A5pSn4jDJ5ZhJRyTH1BjrNIudai2JHOsey/ayE9MAlkqaTnCf8bLIuI0NOOPYKfYzisdw2gJ2PLNxoQ9bJWaLUmy6kqr4k1uxAy4GL8=
-
-
-      expiration: 86400000 # a day
-      refresh-token:
-          expiration: 604800000 # 7 days

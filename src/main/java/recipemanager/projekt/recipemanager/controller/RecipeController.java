@@ -6,11 +6,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import recipemanager.projekt.recipemanager.controller.request.RecipeResponse;
-import recipemanager.projekt.recipemanager.controller.request.Step;
+import recipemanager.projekt.recipemanager.controller.response.RecipeResponse;
+
 import recipemanager.projekt.recipemanager.model.Recipe;
 import recipemanager.projekt.recipemanager.service.RecipeService;
 
@@ -19,7 +17,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/recipe")
-//@PreAuthorize("hasAnyRole('ADMIN' ,'USER')")
 public class RecipeController {
 
 
@@ -33,19 +30,15 @@ public class RecipeController {
     }
 
 
-
-
     @GetMapping("/all")
-    //@PreAuthorize("hasRole('ADMIN' )")
     @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
-    public ResponseEntity<List<Recipe>> getAllRecipes() {
+    public ResponseEntity<List<RecipeResponse>> getAllRecipes( @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         log.info("Received fetching  request");
-        List<Recipe> recipes = recipeService.findAllRecipes();
+        List<RecipeResponse> recipes = recipeService.findAllRecipes(jwtToken);
         return new ResponseEntity<>(recipes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAnyAuthority('admin:read', 'user:read')")
     @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable("id") Long id) {
         log.info("Received fetching  request");
@@ -58,14 +51,12 @@ public class RecipeController {
     @PreAuthorize("@customAuthorizationService.hasAdminRole(principal)")
     public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
 
-            Recipe newRecipe = recipeService.addRecipe(recipe);
-            return new ResponseEntity<>(newRecipe, HttpStatus.CREATED);
+        Recipe newRecipe = recipeService.addRecipe(recipe);
+        return new ResponseEntity<>(newRecipe, HttpStatus.CREATED);
     }
 
 
-
     @PutMapping("/update")
-    //@PreAuthorize("hasAuthority('admin:update')")
     @PreAuthorize("@customAuthorizationService.hasAdminRole(principal)")
     public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipe) {
         Recipe updatedRecipe = recipeService.updateRecipe(recipe);
@@ -74,13 +65,12 @@ public class RecipeController {
     }
 
 
-    @DeleteMapping("delete/{id}")
-    //@PreAuthorize("hasAuthority('admin:delete')")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal)")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
     public ResponseEntity<Recipe> deleteRecipe(@PathVariable("id") Long recipeId,
                                                @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         log.info("Received update  request");
-        recipeService.deleteRecipe(jwtToken,recipeId);
+        recipeService.deleteRecipe(jwtToken, recipeId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -88,11 +78,20 @@ public class RecipeController {
 
     @GetMapping("/with-steps/{recipe-id}")
     @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
-    public ResponseEntity<RecipeResponse> findAllSteps( @PathVariable("recipe-id") Long recipeId,
-                                                        @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
+    public ResponseEntity<RecipeResponse> findAllSteps(@PathVariable("recipe-id") Long recipeId,
+                                                       @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
 
         RecipeResponse response = recipeService.findRecipeWithSteps(jwtToken, recipeId);
         return ResponseEntity.ok(response);
     }
+
+
+    @GetMapping("/a")
+    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
+    public ResponseEntity<List<RecipeResponse>> getRecipes(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
+        log.info("Received fetching request");
+        List<RecipeResponse> recipes = recipeService.getAllRecipes(jwtToken);
+        return new ResponseEntity<>(recipes, HttpStatus.OK);
     }
 
+}

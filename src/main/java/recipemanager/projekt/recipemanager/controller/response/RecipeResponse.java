@@ -1,6 +1,5 @@
-package recipemanager.projekt.recipemanager.controller.request;
+package recipemanager.projekt.recipemanager.controller.response;
 
-import com.sun.jdi.request.StepRequest;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -24,6 +23,7 @@ public class RecipeResponse {
 
     private List<Step> steps;
 
+    private List<IngredientResponse> ingredients;
 
 
 }

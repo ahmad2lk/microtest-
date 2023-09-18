@@ -1,13 +1,10 @@
 package recipemanager.projekt.recipemanager.config;
 
 
-
-
 import com.example.users.user.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,17 +14,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-
-
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +30,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true)
 
 public class WebConfig {
-
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private UserRepo repository;
@@ -53,10 +44,6 @@ public class WebConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-
-                .requestMatchers("/api/v1/recipe/all")
-                .permitAll()
-
 
                 .anyRequest()
                 .authenticated()

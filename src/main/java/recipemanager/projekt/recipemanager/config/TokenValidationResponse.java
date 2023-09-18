@@ -1,4 +1,4 @@
-package recipemanager.projekt.recipemanager.controller;
+package recipemanager.projekt.recipemanager.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccessTokenValidationResponse {
+public class TokenValidationResponse {
 
     private boolean isValid;
     private String role;

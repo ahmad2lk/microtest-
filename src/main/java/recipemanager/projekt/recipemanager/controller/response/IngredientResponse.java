@@ -1,24 +1,28 @@
-package recipemanager.projekt.recipemanager.controller.request;
-
+package recipemanager.projekt.recipemanager.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngredientStepRequest {
+public class IngredientResponse {
 
     private Long id;
 
     private Integer quantity;
+
     private String unit;
-    private String presentation;
-    private Long ingredientId;
-    private Long stepId;
-    private Long foodId;
+
+    private Long recipeId;
+
+    private List<FoodResponse> foods ;
+
+
 
 }

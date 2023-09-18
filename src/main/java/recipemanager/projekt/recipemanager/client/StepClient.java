@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
-import recipemanager.projekt.recipemanager.controller.request.Step;
+import recipemanager.projekt.recipemanager.controller.response.Step;
 
 import java.util.List;
 
@@ -16,6 +16,10 @@ public interface StepClient {
 
     @GetMapping("/recipe/{recipe-id}")
    List<Step> findAllStepsByRecipe(@RequestHeader("Authorization") String jwtToken,@PathVariable("recipe-id") Long recipeId);
+
+    @GetMapping("/all")
+    List<Step> findAllSteps(@RequestHeader("Authorization") String jwtToken);
+
 
 
     @DeleteMapping("/{recipe-id}")

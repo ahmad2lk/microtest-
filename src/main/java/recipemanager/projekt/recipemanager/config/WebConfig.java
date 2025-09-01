@@ -1,7 +1,9 @@
 package recipemanager.projekt.recipemanager.config;
 
 
+
 import com.example.users.user.repo.UserRepo;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import recipemanager.projekt.recipemanager.config.filter.AuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +35,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class WebConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    private final AuthenticationFilter jwtAuthenticationFilter;
     private UserRepo repository;
 
 
@@ -44,6 +49,8 @@ public class WebConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+
+
 
                 .anyRequest()
                 .authenticated()

@@ -17,6 +17,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/recipe")
+@PreAuthorize("@authorizationService.getUserRole() == 'ADMIN'")
 public class RecipeController {
 
 
@@ -31,7 +32,7 @@ public class RecipeController {
 
 
     @GetMapping("/all")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
+  // @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
     public ResponseEntity<List<RecipeResponse>> getAllRecipes( @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         log.info("Received fetching  request");
         List<RecipeResponse> recipes = recipeService.findAllRecipes(jwtToken);
@@ -39,7 +40,7 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
+   // @PreAuthorize("@AuthorizationService.hasAdminRole(principal) or @AuthorizationService.hasUserRole(principal)")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable("id") Long id) {
         log.info("Received fetching  request");
         Recipe recipe = recipeService.findRecipesById(id);
@@ -48,7 +49,7 @@ public class RecipeController {
 
 
     @PostMapping("/add")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal)")
+
     public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
 
         Recipe newRecipe = recipeService.addRecipe(recipe);
@@ -57,7 +58,7 @@ public class RecipeController {
 
 
     @PutMapping("/update")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal)")
+    //  @PreAuthorize("@customAuthorizationService.hasAdminRole(principal)")
     public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipe) {
         Recipe updatedRecipe = recipeService.updateRecipe(recipe);
         log.info("Received update  request");
@@ -66,7 +67,7 @@ public class RecipeController {
 
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
+     //@PreAuthorize("@AuthorizationService.hasAdminRole(principal) or @AuthorizationService.hasUserRole(principal)")
     public ResponseEntity<Recipe> deleteRecipe(@PathVariable("id") Long recipeId,
                                                @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         log.info("Received update  request");
@@ -77,7 +78,7 @@ public class RecipeController {
 
 
     @GetMapping("/with-steps/{recipe-id}")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
+    //  @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
     public ResponseEntity<RecipeResponse> findAllSteps(@PathVariable("recipe-id") Long recipeId,
                                                        @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
 
@@ -87,7 +88,7 @@ public class RecipeController {
 
 
     @GetMapping("/a")
-    @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
+    //  @PreAuthorize("@customAuthorizationService.hasAdminRole(principal) or @customAuthorizationService.hasUserRole(principal)")
     public ResponseEntity<List<RecipeResponse>> getRecipes(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         log.info("Received fetching request");
         List<RecipeResponse> recipes = recipeService.getAllRecipes(jwtToken);

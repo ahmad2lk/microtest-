@@ -1,4 +1,4 @@
-package recipemanager.projekt.recipemanager.client;
+/*package recipemanager.projekt.recipemanager.client;
 
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -11,4 +11,4 @@ public interface UserFeignClient {
 
     @PostMapping("/auth/check")
     TokenValidationResponse validateAccessToken(@RequestHeader("Authorization") String jwtToken);
-}
+}*/

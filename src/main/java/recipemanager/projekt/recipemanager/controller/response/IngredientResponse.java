@@ -21,7 +21,7 @@ public class IngredientResponse {
 
     private Long recipeId;
 
-    private List<FoodResponse> foods ;
+    private FoodResponse food ;
 
 
 

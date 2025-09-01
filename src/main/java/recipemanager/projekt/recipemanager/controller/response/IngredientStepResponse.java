@@ -23,6 +23,6 @@ public class IngredientStepResponse {
 
     private Long stepId;
 
-    private Long foodId;
+
 
 }

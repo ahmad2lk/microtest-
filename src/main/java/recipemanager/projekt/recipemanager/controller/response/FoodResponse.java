@@ -18,5 +18,5 @@ public class FoodResponse {
 
     private String consistency;
     private String unit;
-    private List<IngredientStepResponse> ingredientStepResponses;
+
 }

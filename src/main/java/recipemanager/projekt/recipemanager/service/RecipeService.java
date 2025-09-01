@@ -2,12 +2,13 @@ package recipemanager.projekt.recipemanager.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import recipemanager.projekt.recipemanager.client.IngredientCleint;
 import recipemanager.projekt.recipemanager.client.StepClient;
-import recipemanager.projekt.recipemanager.controller.response.FoodResponse;
 import recipemanager.projekt.recipemanager.controller.response.IngredientResponse;
 import recipemanager.projekt.recipemanager.controller.response.RecipeResponse;
 import recipemanager.projekt.recipemanager.controller.response.Step;
@@ -18,7 +19,7 @@ import recipemanager.projekt.recipemanager.repo.RecipeRepo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -27,7 +28,6 @@ import java.util.stream.Collectors;
 public class RecipeService {
 
     private final RecipeRepo recipeRepo;
-    private final ObjectMapper objectMapper;
     private final StepClient stepclient;
     private final IngredientCleint ingredientClient;
 
@@ -39,19 +39,14 @@ public class RecipeService {
 
 
     public List<RecipeResponse> findAllRecipes(String jwtToken) {
+
         List<Recipe> recipeList = recipeRepo.findAll();
+        List<Step> allSteps = stepclient.findAllSteps(jwtToken);
+        List<IngredientResponse> allIngredients = ingredientClient.findAllIngredient(jwtToken);
 
-        Map<Long, List<Step>> stepsMap = stepclient.findAllSteps(jwtToken)
-                .stream()
-                .collect(Collectors.groupingBy(Step::getRecipeId));
+        List<RecipeResponse> recipeResponses = new ArrayList<>();
 
-        Map<Long, List<IngredientResponse>> ingredientsMap = ingredientClient.findAllIngredient(jwtToken)
-                .stream()
-                .collect(Collectors.groupingBy(IngredientResponse::getRecipeId));
-
-
-
-        return recipeList.parallelStream().map(recipe -> {
+        for (Recipe recipe : recipeList) {
             RecipeResponse recipeResponse = new RecipeResponse();
             Long recipeId = recipe.getId();
 
@@ -59,17 +54,28 @@ public class RecipeService {
             recipeResponse.setName(recipe.getName());
             recipeResponse.setPrice(recipe.getPrice());
 
-            // Retrieve associated steps and ingredients from the maps
-            List<Step> stepList = stepsMap.getOrDefault(recipeId, Collections.emptyList());
-            List<IngredientResponse> ingredientList = ingredientsMap.getOrDefault(recipeId, Collections.emptyList());
+            List<Step> stepList = new ArrayList<>();
+            List<IngredientResponse> ingredientList = new ArrayList<>();
 
+            for (Step step : allSteps) {
+                if (step.getRecipeId().equals(recipeId)) {
+                    stepList.add(step);
+                }
+            }
 
+           for (IngredientResponse ingredient : allIngredients) {
+                if (ingredient.getRecipeId().equals(recipeId)) {
+                    ingredientList.add(ingredient);
+                }
+            }
 
             recipeResponse.setSteps(stepList);
             recipeResponse.setIngredients(ingredientList);
 
-            return recipeResponse;
-        }).collect(Collectors.toList());
+            recipeResponses.add(recipeResponse);
+        }
+
+        return recipeResponses;
     }
 
 
@@ -161,6 +167,10 @@ public class RecipeService {
             return recipeResponse;
         }).collect(Collectors.toList());
     }
+
+
+
+
 }
 
 
